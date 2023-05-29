@@ -77,7 +77,6 @@ function optionChanged(subjectID){
 };
 
 function init(){ 
-  // let patient = d3.select("#patient-info");
   
   d3.json(URL).then((data) => { 
   
