@@ -1,22 +1,24 @@
+const URL = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
+
 function metadata(sample){
-d3.json("https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json").then((data) => {
+d3.json(URL).then((data) => {
       let metadata = data.metadata;
       let resultArray = metadata.filter(metadataObj => metadataObj.id == sample);
       let result = resultArray[0];
       let metadatasample = d3.select("#sample-metadata");
       metadatasample.html("");
       for (portion in result){
-        metadata.append("h6").text(`${portion.toUpperCase()}: ${result[portion]}`);
+        metadatasample.append("h6").text(`${portion.toUpperCase()}: ${result[portion]}`);
       };
 })};
 
 function buildCharts(sample) {
-    d3.json("https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json").then((data) => {
-      let samples = data.metadata;
-      let resultArray = samples.filter(metadataObj => metadataObj.id == sample);
+    d3.json(URL).then((data) => {
+      let samples = data.samples;
+      let resultArray = samples.filter(samplesObj => samplesObj.id == sample);
       let result = resultArray[0];
       
-      console.log(resultArray);
+      // console.log(resultArray);
       let otu_ids = result.otu_ids;
       let otu_labels = result.otu_labels;
       let sample_values = result.sample_values;
@@ -68,19 +70,32 @@ function buildCharts(sample) {
     });
   }
   
-  // let metadataPanel = d3.select("data.sample");
-  // metadataPanel.html(""); // Clear existing metadata
+ 
+function optionChanged(subjectID){
+  buildCharts(subjectID);
+  metadata(subjectID);
+};
 
-  // Object.entries(result).forEach(([key, value]) => {
-  // metadataPanel.append("p").text(`${key}: ${value}`);
-  // });
+
 function init(){ 
-  let patient = d3.select("#patient-info");
-  d3.json("https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json").then((data) => { 
+  // let patient = d3.select("#patient-info");
+  // console.log(patient)
+  d3.json(URL).then((data) => { 
+  
+    let subjectIDs = data.names;
+    // for (let i=0; i < firstdata.length;i++){
+    //   patient.append("option").text(firstdata[i]).property("value",firstdata[i]);
+    // };
+    let dropdown = d3.select("#selDataset");
     
-    let firstdata = data.names;
-    buildCharts(firstdata)
-});
+    subjectIDs.forEach(id => dropdown.append("option").attr("value", id).text(id));
+   
+
+    let firstID = subjectIDs[0];
+    optionChanged(firstID);
+  });
 }
-  init()
+
+
+init()
   
