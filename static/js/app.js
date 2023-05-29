@@ -76,16 +76,13 @@ function optionChanged(subjectID){
   metadata(subjectID);
 };
 
-
 function init(){ 
   // let patient = d3.select("#patient-info");
-  // console.log(patient)
+  
   d3.json(URL).then((data) => { 
   
     let subjectIDs = data.names;
-    // for (let i=0; i < firstdata.length;i++){
-    //   patient.append("option").text(firstdata[i]).property("value",firstdata[i]);
-    // };
+  
     let dropdown = d3.select("#selDataset");
     
     subjectIDs.forEach(id => dropdown.append("option").attr("value", id).text(id));
